@@ -191,3 +191,8 @@ This task  enables borrowers to make repayments towards their loans, ensuring ac
 
 
 
+# Database Details
+Host: localhost | Database: bac4353a
+Username: bac4353a | Password: Cab#22se
+
+https://projects.hicounselor.com/zootopia/tbl_sql.php
