@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MovieTicketingSystem" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="org.example.MovieTicketingSystemApp" />
+    <option name="MAIN_CLASS_NAME" value="org.example.SmartCreditManagementApp" />
     <module name="Smart-Credit-Management" />
     <method v="2">
       <option name="Make" enabled="true" />
