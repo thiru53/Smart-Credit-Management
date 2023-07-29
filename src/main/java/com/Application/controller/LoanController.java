@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,14 +29,23 @@ import com.Application.entity.RepaymentRequest;
 @RequestMapping("/loans")
 public class LoanController {
 
+    @Autowired
+    private LoanService loanService;
 
     @PostMapping("/process")
     public ResponseEntity<Map<String, String>> applyLoan(@RequestBody LoanApplicationRequest request) {
 
         Map<String, String> response = new HashMap<>();
-        response.put("status", "success/failure");
-        response.put("message", "Logic for Loan application approved and transferred");
-        return ResponseEntity.ok(response);
+        try{
+            boolean isLoanApproved = loanService.applyLoan(request);
+            response.put("status", "success");
+            response.put("message", "Logic for Loan application approved and transferred");
+            return ResponseEntity.ok(response);
+        } catch (Exception e){
+            response.put("status", "failed");
+            response.put("message", e.getMessage());
+        }
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
 
     }
     @GetMapping

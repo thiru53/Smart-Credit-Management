@@ -21,11 +21,10 @@ The goal is to process a loan application using POST endpoint "/loans/process" a
         "loanAmount": 4000.0  
     }
 
-The loan application process involves several checks to ensure that the loan can be granted. If the borrower ID is new (not found in the loan table), the credit limit is initially set to 5000. For subsequent loan applications from the same borrower, the credit limit is checked from the credit limit table.
-
-The system then verifies if there are any existing unpaid loans with crossed repayment dates, which would prevent the loan from being approved. Additionally, the system checks if the loan amount exceeds the remaining credit limit available to the borrower.
-
-To track credit limits, the "credit_limit" table is updated during the loan processing, which includes fields such as "borrowerId," "creditLimit," "usedAmount," and "remainingAmount.". After first time if borrower comes for loan the
+The loan application process involves several checks to ensure that the loan can be granted.
+1. If the borrower ID is new (not found in the loan table), the credit limit is initially set to 5000. For subsequent loan applications from the same borrower, the credit limit is checked from the credit limit table.
+2. The system then verifies if there are any existing unpaid loans with crossed repayment dates, which would prevent the loan from being approved. Additionally, the system checks if the loan amount exceeds the remaining credit limit available to the borrower.
+3. To track credit limits, the "credit_limit" table is updated during the loan processing, which includes fields such as "borrowerId," "creditLimit," "usedAmount," and "remainingAmount.". After first time if borrower comes for loan the
 
 Furthermore, the system employs a credit limit assessment based on borrower performance. This assessment is scheduled to occur at midnight on the first day of every month. The CreditLimitScheduler class handles this periodic task by invoking the assessBorrowerPerformanceAndUpdateCreditLimit method from the LoanService for each borrower.
 

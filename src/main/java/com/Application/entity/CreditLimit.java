@@ -1,7 +1,9 @@
 package com.Application.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "credit_limit")
 public class CreditLimit {
