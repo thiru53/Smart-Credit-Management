@@ -42,7 +42,7 @@ public class LoanController {
             response.put("message", "Logic for Loan application approved and transferred");
             return ResponseEntity.ok(response);
         } catch (Exception e){
-            response.put("status", "failed");
+            response.put("status", "fail");
             response.put("message", e.getMessage());
         }
         return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
