@@ -1,7 +1,9 @@
 package com.Application.Service;
 
+import com.Application.Repository.PaymentTransactionRepository;
 import com.Application.entity.CreditLimit;
 import com.Application.entity.Loan;
+import com.Application.entity.PaymentTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,9 @@ public class LoanService {
 
     @Autowired
     private CreditLimitRepository creditLimitRepository;
+
+    @Autowired
+    private PaymentTransactionRepository paymentTransactionRepository;
 
     @Transactional
     public boolean applyLoan(LoanApplicationRequest request){
@@ -80,6 +85,10 @@ public class LoanService {
 
     public CreditLimit getCreditLimitByBorrowerId(String borrowerId) {
         return creditLimitRepository.findByBorrowerId(borrowerId);
+    }
+
+    public PaymentTransaction getPaymentDetailsByLoanId(Long loanId) {
+        return paymentTransactionRepository.findByLoanId(loanId);
     }
 }
 

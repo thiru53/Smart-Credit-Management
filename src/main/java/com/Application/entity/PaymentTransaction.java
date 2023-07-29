@@ -3,7 +3,9 @@ package com.Application.entity;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "payment_transaction")
 public class PaymentTransaction {

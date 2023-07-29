@@ -12,5 +12,6 @@ import com.Application.entity.PaymentTransaction;
 public interface PaymentTransactionRepository extends JpaRepository<PaymentTransaction, Long> {
 
     // You can add custom query methods if needed
+    PaymentTransaction findByLoanId(Long loanId);
 }
 
