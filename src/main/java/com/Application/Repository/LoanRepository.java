@@ -12,7 +12,7 @@ import com.Application.entity.Loan;
 @Repository
 public interface LoanRepository extends JpaRepository<Loan, Long> {
 
-
     // You can add custom query methods if needed
+    List<Loan> findByBorrowerId(String borrowerId);
 
 }

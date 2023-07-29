@@ -3,7 +3,10 @@ package com.Application.entity;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+
+@Data
 @Entity
 @Table(name = "loan")
 public class Loan {
