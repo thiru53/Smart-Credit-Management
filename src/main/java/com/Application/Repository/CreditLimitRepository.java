@@ -13,6 +13,6 @@ public interface CreditLimitRepository extends JpaRepository<CreditLimit, Long> 
 
 
     // You can add custom query methods if needed
-    List<CreditLimit> findByBorrowerId(String borrowerId);
+    CreditLimit findByBorrowerId(String borrowerId);
 }
 
