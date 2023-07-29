@@ -144,12 +144,31 @@ public class LoanController {
     public ResponseEntity<Object> repayLoan(@PathVariable("loanId") Long loanId, @RequestBody RepaymentRequest request) {
 
         Map<String, String> response = new HashMap<>();
-        response.put("status", "failure");
-        response.put("message", "Logic for  for this loan.");
-        return ResponseEntity.ok(response);
+        try{
+            PaymentTransaction paymentTransaction = loanService.getPaymentDetailsByLoanId(loanId);
+
+            if(Objects.isNull(paymentTransaction)){
+                response.put("status", "failure");
+                response.put("message", "No PaymentTransaction found for loanId: "+loanId);
+                return ResponseEntity.ok(response);
+            }
+            if(request.getRepaymentAmount() == paymentTransaction.getTotalAmount()){
+                paymentTransaction.setPaymentStatus("Paid");
+                paymentTransaction.setRepaymentDate(LocalDate.now());
+                loanService.savePaymentTransaction(paymentTransaction);
+                response.put("status", "success");
+                response.put("message", "Loan repayment successful.");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("status", "failure");
+                response.put("message", "Payment cannot be done as you need to pay the full loan amount.");
+                return ResponseEntity.ok(response);
+            }
+        }catch (Exception e){
+            response.put("status", "failure");
+            response.put("message", e.getMessage());
+        }
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
 
     }
-
-
-
 }
