@@ -72,5 +72,16 @@ public class LoanService {
     }
 
 
+    public Loan findById(Long loanId) {
+        return loanRepository.findById(loanId).orElseThrow(() -> new RuntimeException("Invalid load ID."));
+    }
+
+    public List<Loan> findAll() {
+        return loanRepository.findAll();
+    }
+
+    public List<Loan> findByBorrowerId(String borrowerId) {
+        return loanRepository.findByBorrowerId(borrowerId);
+    }
 }
 

@@ -52,32 +52,46 @@ public class LoanController {
     public ResponseEntity<Object> viewAllLoans() {
 
         Map<String, String> response = new HashMap<>();
-        response.put("status", "success/failure");
-        response.put("message", "logic for retriving  loan data ");
-        return ResponseEntity.ok(response);
-
-
-
+        try{
+            List<Loan> loan = loanService.findAll();
+            return ResponseEntity.ok(loan);
+        } catch (Exception e) {
+            response.put("status", "failure");
+            response.put("message", e.getMessage());
+        }
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
     @GetMapping("/{loanId}")
     public ResponseEntity<Object> viewLoanById(@PathVariable("loanId") Long loanId) {
 
         Map<String, String> response = new HashMap<>();
-        response.put("status", "succcess/failure");
-        response.put("message","logic for retriving  loan data using loan id ");
-        return ResponseEntity.ok(response);
+        try{
+           Loan loan = loanService.findById(loanId);
+            return ResponseEntity.ok(loan);
+        } catch (Exception e) {
+            response.put("status", "failure");
+            response.put("message", e.getMessage());
+        }
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
 
     }
     @GetMapping("/borrowers/{borrowerId}")
     public ResponseEntity<Object> viewLoansByBorrowerId(@PathVariable("borrowerId") String borrowerId) {
 
         Map<String, String> response = new HashMap<>();
-        response.put("status", "success/failure");
-        response.put("message", "logic for retriving  loan data using borrower id ");
-        return ResponseEntity.ok(response);
-
-
-
+        try{
+            List<Loan> loans = loanService.findByBorrowerId(borrowerId);
+            if(loans.isEmpty()){
+                response.put("status", "failure");
+                response.put("message", "No loan data found for borrower ID: "+borrowerId);
+                return ResponseEntity.ok(response);
+            }
+            return ResponseEntity.ok(loans);
+        } catch (Exception e) {
+            response.put("status", "failure");
+            response.put("message", e.getMessage());
+        }
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/creditlimit/{borrowerId}")
