@@ -98,9 +98,19 @@ public class LoanController {
     public ResponseEntity<Object> viewCreditLimitByBorrowerId(@PathVariable("borrowerId") String borrowerId) {
 
         Map<String, String> response = new HashMap<>();
-        response.put("status", "success/failure");
-        response.put("message", "logic for retriving  creditlimit  data using borrower id ");
-        return ResponseEntity.ok(response);
+        try{
+            CreditLimit creditLimit = loanService.getCreditLimitByBorrowerId(borrowerId);
+            if(Objects.isNull(creditLimit)){
+                response.put("status", "failure");
+                response.put("message", "No credit limit data found for borrower ID: "+borrowerId);
+                return ResponseEntity.ok(response);
+            }
+            return ResponseEntity.ok(creditLimit);
+        }catch (Exception e){
+            response.put("status", "failure");
+            response.put("message", e.getMessage());
+        }
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
 
     }
 

@@ -11,8 +11,6 @@ import com.Application.entity.LoanApplicationRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,21 +33,17 @@ public class LoanService {
                     // prevent loan
                 }
             }
-        }
+        } else {
+            Loan loan = populateNewLoanByRequest(request);
+            loanRepository.save(loan);
 
-        List<CreditLimit> creditLimits = creditLimitRepository.findByBorrowerId(request.getBorrowerId());
-        if(!creditLimits.isEmpty()){
-            for (CreditLimit cl : creditLimits) {
-                if (cl.getCreditLimit() < request.getLoanAmount() || cl.getRemainingAmount() < request.getLoanAmount()) {
-                    throw new RuntimeException("Loan amount exceeds the remaining credit limit.");
-                }
+            CreditLimit creditLimit = creditLimitRepository.findByBorrowerId(request.getBorrowerId());
+            if (creditLimit.getCreditLimit() < request.getLoanAmount() || creditLimit.getRemainingAmount() < request.getLoanAmount()) {
+                throw new RuntimeException("Loan amount exceeds the remaining credit limit.");
+            } else {
+                creditLimitRepository.save(populateNewCreditLimitByRequest(request));
             }
         }
-        Loan loan = populateNewLoanByRequest(request);
-        loanRepository.save(loan);
-
-        CreditLimit creditLimit = populateNewCreditLimitByRequest(request);
-        creditLimitRepository.save(creditLimit);
         return true;
     }
 
@@ -82,6 +76,10 @@ public class LoanService {
 
     public List<Loan> findByBorrowerId(String borrowerId) {
         return loanRepository.findByBorrowerId(borrowerId);
+    }
+
+    public CreditLimit getCreditLimitByBorrowerId(String borrowerId) {
+        return creditLimitRepository.findByBorrowerId(borrowerId);
     }
 }
 
