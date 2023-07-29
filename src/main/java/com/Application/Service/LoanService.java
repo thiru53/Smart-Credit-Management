@@ -90,5 +90,14 @@ public class LoanService {
     public PaymentTransaction getPaymentDetailsByLoanId(Long loanId) {
         return paymentTransactionRepository.findByLoanId(loanId);
     }
+
+    public void savePaymentTransaction(PaymentTransaction paymentTransaction) {
+        Loan loan = loanRepository.findById(paymentTransaction.getLoanId()).orElseThrow(() -> new RuntimeException("No loan data found for ID: "+paymentTransaction.getLoanId()));
+        loan.setRepaymentDate(LocalDate.now());
+        loan.setPaymentStatus("Paid");
+        loan.setPaidDate(LocalDate.now());
+        loanRepository.save(loan);
+        paymentTransactionRepository.save(paymentTransaction);
+    }
 }
 
