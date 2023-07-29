@@ -121,10 +121,22 @@ public class LoanController {
 
 
         PaymentDetailsResponse response = new PaymentDetailsResponse();
-        response.setStatus("success");
-        response.setMessage("Logic for Payment transaction details retrieved successfully.");
-
-        return ResponseEntity.ok(response);
+        try{
+            PaymentTransaction paymentTransaction = loanService.getPaymentDetailsByLoanId(loanId);
+            if(Objects.isNull(paymentTransaction)) {
+                response.setStatus("failure");
+                response.setMessage("invalid loan ID.");
+            } else {
+                response.setStatus("success");
+                response.setMessage("Payment transaction details retrieved successfully");
+            }
+            response.setPaymentTransaction(paymentTransaction);
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
+            response.setStatus("failure");
+            response.setMessage(e.getMessage());
+        }
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
 
     }
 
